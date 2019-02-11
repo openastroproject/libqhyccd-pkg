@@ -1,0 +1,11 @@
+
+override_dh_auto_build:
+	dh_auto_build -- LIBDIR=/usr/lib/$(DEB_HOST_MULTIARCH) VERSION=DEBVERSION
+
+override_dh_auto_install:
+	dh_auto_install -- SRCDIR=$(CURDIR) ARCH=$(DEB_TARGET_ARCH) \
+		INCDIR=$(CURDIR)/debian/tmp/usr/include \
+		LIBDIR=$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH) \
+		PKGCONFDIR=$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig \
+		UDEVDIR=$(CURDIR)/debian/tmp/lib/udev/rules.d \
+		VERSION=DEBVERSION MAJOR_REV=1

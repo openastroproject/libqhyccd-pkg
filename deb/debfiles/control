@@ -1,0 +1,22 @@
+Source: libqhyccd
+Priority: optional
+Maintainer: James Fidell <james@openastroproject.org>
+Build-Depends: debhelper (>=9)
+Standards-Version: 3.9.7
+Section: libs
+Homepage: https://www.qhyccd.com/
+
+Package: libqhyccd
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, fxload, libusb-1.0-0
+Description: QHY camera interface library
+ Userspace library for connecting to QHY astronomy cameras
+
+Package: libqhyccd-dev
+Section: libdevel
+Architecture: any
+Depends: libqhyccd (= ${binary:Version}), ${misc:Depends}, libusb-1.0-0-dev
+Description: QHY camera interface library development files
+ Development headers, libraries, shared objects, examples and documentation
+ for libqhyccd, a userspace library for controlling QHY astronomy cameras.

@@ -8,4 +8,4 @@ override_dh_auto_install:
 		LIBDIR=$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH) \
 		PKGCONFDIR=$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig \
 		UDEVDIR=$(CURDIR)/debian/tmp/lib/udev/rules.d \
-		VERSION=DEBVERSION MAJOR_REV=1
+		VERSION=DEBVERSION MAJOR_REV=4

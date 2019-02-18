@@ -1,8 +1,8 @@
 Source: libqhyccd
 Priority: optional
 Maintainer: James Fidell <james@openastroproject.org>
-Build-Depends: debhelper (>=9)
-Standards-Version: 3.9.7
+Build-Depends: debhelper (>=10)
+Standards-Version: 4.1.4
 Section: libs
 Homepage: https://www.qhyccd.com/
 

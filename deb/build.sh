@@ -10,16 +10,15 @@ debdir=debian
 debsrc=$debdir/source
 quiltconf=$HOME/.quiltrc-dpkg
 
-mkdir $srcdir
-cd $srcdir
 tar zxf ../libqhyccd-$version.tar.gz
+cd $srcdir
 YFLAG=-y
 dh_make -v | fgrep -q '1998-2011'
 if [ $? -eq 0 ]
 then
   YFLAG=''
 fi
-dh_make $YFLAG -l -f ../libqhyccd-$version.tar.gz
+dh_make $YFLAG -l -f ../../libqhyccd-$version.tar.gz
 
 cp ../debfiles/control $debdir
 cp ../debfiles/copyright $debdir
@@ -28,19 +27,18 @@ cp ../debfiles/watch $debdir
 cp ../debfiles/libqhyccd.dirs $debdir
 cp ../debfiles/libqhyccd.install $debdir
 cp ../debfiles/libqhyccd.symbols $debdir
+cp ../debfiles/libqhyccd.triggers $debdir
 cp ../debfiles/libqhyccd-dev.dirs $debdir
 cp ../debfiles/libqhyccd-dev.install $debdir
 cp ../debfiles/libqhyccd-dev.examples $debdir
 
-echo 9 > $debdir/compat
+echo 10 > $debdir/compat
 
 sed -e '/^.*[ |]configure./a\
-        ldconfig\
-	udevadm control --reload-rules' < $debdir/postinst.ex > $debdir/postinst
+	udevadm control --reload-rules || true' < $debdir/postinst.ex > $debdir/postinst
 chmod +x $debdir/postinst
 sed -e '/^.*[ |]remove./a\
-        ldconfig\
-	udevadm control --reload-rules' < $debdir/postrm.ex > $debdir/postrm
+	udevadm control --reload-rules || true' < $debdir/postrm.ex > $debdir/postrm
 chmod +x $debdir/postrm
 echo "3.0 (quilt)" > $debsrc/format
 

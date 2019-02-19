@@ -1,0 +1,2 @@
+lib/firmware/qhy/*
+lib/udev/rules.d/85-qhyccd.rules

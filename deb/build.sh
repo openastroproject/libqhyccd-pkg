@@ -31,6 +31,8 @@ cp ../debfiles/libqhyccd.triggers $debdir
 cp ../debfiles/libqhyccd-dev.dirs $debdir
 cp ../debfiles/libqhyccd-dev.install $debdir
 cp ../debfiles/libqhyccd-dev.examples $debdir
+cp ../debfiles/qhy-firmware.dirs $debdir
+cp ../debfiles/qhy-firmware.install $debdir
 
 echo 10 > $debdir/compat
 

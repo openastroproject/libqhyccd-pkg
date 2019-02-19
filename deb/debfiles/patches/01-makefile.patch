@@ -1,7 +1,7 @@
 Create a makefile to install the pre-built binaries and headers etc.
 --- Makefile	1970-01-01 01:00:00.000000000 +0100
 +++ Makefile	2016-11-10 17:31:08.686722661 +0000
-@@ -0,0 +1,27 @@
+@@ -0,0 +1,29 @@
 +all:	libqhyccd.pc
 +
 +%.pc:	%.pc.in
@@ -9,7 +9,7 @@ Create a makefile to install the pre-built binaries and headers etc.
 +		-e "s!@VERSION@!$(VERSION)!g" < $< > $@
 +
 +install:
-+	mkdir -p $(LIBDIR) $(INCDIR) $(PKGCONFDIR) $(UDEVDIR)
++	mkdir -p $(LIBDIR) $(INCDIR) $(PKGCONFDIR) $(UDEVDIR) $(FIRMWAREDIR)
 +	case $(DEB_BUILD_ARCH) in \
 +	i386) \
 +		cp $(SRCDIR)/usr/local/lib/libqhyccd.a $(LIBDIR); \
@@ -29,3 +29,5 @@ Create a makefile to install the pre-built binaries and headers etc.
 +	ln -sf libqhyccd.so.$(VERSION) $(LIBDIR)/libqhyccd.so
 +	cp $(SRCDIR)/usr/local/include/*.h $(INCDIR)
 +	cp $(SRCDIR)/libqhyccd.pc $(PKGCONFDIR)
++	cp $(SRCDIR)/usr/local/lib/qhy/firmware/* $(FIRMWAREDIR)
++	cp $(SRCDIR)/lib/udev/rules.d/85-qhyccd.rules $(UDEVDIR)

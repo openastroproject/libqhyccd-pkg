@@ -20,3 +20,11 @@ Depends: libqhyccd (= ${binary:Version}), ${misc:Depends}, libusb-1.0-0-dev
 Description: QHY camera interface library development files
  Development headers, libraries, shared objects, examples and documentation
  for libqhyccd, a userspace library for controlling QHY astronomy cameras.
+
+Package: qhy-firmware
+Section: misc
+Architecture: all
+Depends: ${misc:Depends}, fxload
+Description: QHY camera firmware files and udev rules
+ Firmware files for QHY cameras and udev rules for uploading the firmware
+ when cameras are connected.

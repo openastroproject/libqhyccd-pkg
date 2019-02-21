@@ -1,7 +1,7 @@
 Create a makefile to install the pre-built binaries and headers etc.
 --- Makefile	1970-01-01 01:00:00.000000000 +0100
 +++ Makefile	2016-11-10 17:31:08.686722661 +0000
-@@ -0,0 +1,29 @@
+@@ -0,0 +1,35 @@
 +all:	libqhyccd.pc
 +
 +%.pc:	%.pc.in
@@ -9,25 +9,31 @@ Create a makefile to install the pre-built binaries and headers etc.
 +		-e "s!@VERSION@!$(VERSION)!g" < $< > $@
 +
 +install:
-+	mkdir -p $(LIBDIR) $(INCDIR) $(PKGCONFDIR) $(UDEVDIR) $(FIRMWAREDIR)
++	mkdir -p $(LIBDIR) $(INCDIR) $(PKGCONFDIR) $(UDEVDIR) $(FIRMWAREDIR) $(SBINDIR)
 +	case $(DEB_BUILD_ARCH) in \
 +	i386) \
-+		cp $(SRCDIR)/usr/local/lib/libqhyccd.a $(LIBDIR); \
-+		cp $(SRCDIR)/usr/local/lib/libqhyccd*.so.$(VERSION) $(LIBDIR);; \
++		cp $(SRCDIR)/usr/local/lib/x86/libqhyccd.a $(LIBDIR); \
++		cp $(SRCDIR)/usr/local/lib/x86/libqhyccd*.so.$(VERSION) $(LIBDIR); \
++		cp $(SRCDIR)/sbin/x86/fxload $(SBINDIR)/qhyfxload;; \
 +	amd64) \
 +		cp $(SRCDIR)/usr/local/lib/x64/libqhyccd.a $(LIBDIR); \
-+		cp $(SRCDIR)/usr/local/lib/x64/libqhyccd*.so.$(VERSION) $(LIBDIR);; \
++		cp $(SRCDIR)/usr/local/lib/x64/libqhyccd*.so.$(VERSION) $(LIBDIR); \
++		cp $(SRCDIR)/sbin/x64/fxload $(SBINDIR)/qhyfxload;; \
 +	arm64) \
 +		cp $(SRCDIR)/usr/local/lib/armv8/libqhyccd.a $(LIBDIR); \
-+		cp $(SRCDIR)/usr/local/lib/armv8/libqhyccd*.so.$(VERSION) $(LIBDIR);; \
++		cp $(SRCDIR)/usr/local/lib/armv8/libqhyccd*.so.$(VERSION) $(LIBDIR); \
++		cp $(SRCDIR)/sbin/armv8/fxload $(SBINDIR)/qhyfxload;; \
 +	armhf) \
-+		arch=`uname -m | sed -e 's/[lb]$$//'`; \
 +		cp $(SRCDIR)/usr/local/lib/armv7/libqhyccd.a $(LIBDIR); \
-+		cp $(SRCDIR)/usr/local/lib/armv7/libqhyccd*.so.$(VERSION) $(LIBDIR);; \
++		cp $(SRCDIR)/usr/local/lib/armv7/libqhyccd*.so.$(VERSION) $(LIBDIR); \
++		cp $(SRCDIR)/sbin/armv7/fxload $(SBINDIR)/qhyfxload;; \
 +	esac
 +	ln -sf libqhyccd.so.$(VERSION) $(LIBDIR)/libqhyccd.so.$(MAJOR_REV)
 +	ln -sf libqhyccd.so.$(VERSION) $(LIBDIR)/libqhyccd.so
-+	cp $(SRCDIR)/usr/local/include/*.h $(INCDIR)
++	cp $(SRCDIR)/usr/local/include/qhyccd.h $(INCDIR)
++	cp $(SRCDIR)/usr/local/include/qhyccdstruct.h $(INCDIR)
++	cp $(SRCDIR)/usr/local/include/qhyccdcamdef.h $(INCDIR)
++	cp $(SRCDIR)/usr/local/include/qhyccderr.h $(INCDIR)
 +	cp $(SRCDIR)/libqhyccd.pc $(PKGCONFDIR)
 +	cp $(SRCDIR)/usr/local/lib/qhy/firmware/* $(FIRMWAREDIR)
 +	cp $(SRCDIR)/lib/udev/rules.d/85-qhyccd.rules $(UDEVDIR)

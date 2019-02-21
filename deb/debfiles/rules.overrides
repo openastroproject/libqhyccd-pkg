@@ -5,6 +5,7 @@ override_dh_auto_build:
 override_dh_auto_install:
 	dh_auto_install -- SRCDIR=$(CURDIR) ARCH=$(DEB_TARGET_ARCH) \
 		INCDIR=$(CURDIR)/debian/tmp/usr/include \
+		SBINDIR=$(CURDIR)/debian/tmp/sbin \
 		LIBDIR=$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH) \
 		PKGCONFDIR=$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig \
 		UDEVDIR=$(CURDIR)/debian/tmp/lib/udev/rules.d \

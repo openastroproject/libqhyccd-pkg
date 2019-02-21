@@ -1,25 +1,4 @@
 Remove non-existent config.h from headers
---- usr/local/include/qhyccdcamdef.h	2019-02-12 19:45:57.000000000 +0000
-+++ usr/local/include/qhyccdcamdef.h	2019-02-14 22:14:47.770566483 +0000
-@@ -1,10 +1,6 @@
--
--
- #ifndef __QHYCCDCAMDEF_H__
- #define __QHYCCDCAMDEF_H__
- 
--#include "config.h"
--
- /* IMG series */
- 
- /**
---- usr/local/include/qhyccderr.h	2019-02-12 19:45:57.000000000 +0000
-+++ usr/local/include/qhyccderr.h	2019-02-08 22:14:55.885896271 +0000
-@@ -1,5 +1,3 @@
--
--#include "config.h"
- #ifndef __QHYCCDERR_H__
- #define __QHYCCDERR_H__
- 
 --- usr/local/include/qhyccdstruct.h	2019-02-12 19:45:57.000000000 +0000
 +++ usr/local/include/qhyccdstruct.h	2019-02-14 22:22:27.902581207 +0000
 @@ -1,9 +1,3 @@

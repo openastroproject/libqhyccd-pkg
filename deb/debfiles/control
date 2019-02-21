@@ -9,7 +9,7 @@ Homepage: https://www.qhyccd.com/
 Package: libqhyccd
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}, fxload, libusb-1.0-0
+Depends: ${shlibs:Depends}, ${misc:Depends}, libusb-1.0-0
 Description: QHY camera interface library
  Userspace library for connecting to QHY astronomy cameras
 
@@ -24,7 +24,7 @@ Description: QHY camera interface library development files
 Package: qhy-firmware
 Section: misc
 Architecture: all
-Depends: ${misc:Depends}, fxload
+Depends: ${misc:Depends}
 Description: QHY camera firmware files and udev rules
  Firmware files for QHY cameras and udev rules for uploading the firmware
  when cameras are connected.

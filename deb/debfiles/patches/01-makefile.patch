@@ -35,5 +35,5 @@ Create a makefile to install the pre-built binaries and headers etc.
 +	cp $(SRCDIR)/usr/local/include/qhyccdcamdef.h $(INCDIR)
 +	cp $(SRCDIR)/usr/local/include/qhyccderr.h $(INCDIR)
 +	cp $(SRCDIR)/libqhyccd.pc $(PKGCONFDIR)
-+	cp $(SRCDIR)/usr/local/lib/qhy/firmware/* $(FIRMWAREDIR)
++	cp $(SRCDIR)/lib/firmware/qhy/* $(FIRMWAREDIR)
 +	cp $(SRCDIR)/lib/udev/rules.d/85-qhyccd.rules $(UDEVDIR)

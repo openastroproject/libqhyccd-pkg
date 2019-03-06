@@ -43,7 +43,7 @@ Allow the header files to compiler in C as well as C++
  #endif
  
  /**
-@@ -74,7 +81,7 @@
+@@ -74,7 +80,7 @@
  }
  CCDREG;
  
@@ -52,7 +52,7 @@ Allow the header files to compiler in C as well as C++
  {
    uint16_t LineSize;
    uint16_t PatchNumber;
-@@ -86,7 +93,7 @@
+@@ -86,7 +92,7 @@
    uint8_t  BIOCCD_Mode;
    uint8_t  BIOCCD_Video;
    uint8_t  SDRAM_Bypass;
@@ -61,7 +61,7 @@ Allow the header files to compiler in C as well as C++
  
  
  
-@@ -127,7 +134,7 @@
+@@ -127,7 +133,7 @@
   *
   * List of the function could be control
   */
@@ -70,10 +70,10 @@ Allow the header files to compiler in C as well as C++
  {
    CONTROL_BRIGHTNESS = 0, //!< image brightness
    CONTROL_CONTRAST,       //!< image contrast
-@@ -191,22 +198,22 @@
-   DefaultOffset,
-   OutputDataActualBits,
-   OutputDataAlignment
+@@ -194,22 +200,22 @@
+ 
+   CAM_SINGLEFRAMEMODE,
+   CAM_LIVEVIDEOMODE
 -};
 +} CONTROL_ID;
  

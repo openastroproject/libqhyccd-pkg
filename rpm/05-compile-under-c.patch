@@ -1,0 +1,100 @@
+Allow the header files to compiler in C as well as C++
+--- usr/local/include/qhyccd.h	2019-02-14 22:59:02.270267224 +0000
++++ usr/local/include/qhyccd.h	2019-02-14 22:59:40.842652662 +0000
+@@ -5,7 +5,9 @@
+ #include <qhyccderr.h>
+ #include <qhyccdcamdef.h>
+ #include <qhyccdstruct.h>
++#if defined(_WIN32) || defined(__cplusplus)
+ #include <functional>
++#endif
+ 
+ #if defined (_WIN32)
+ #include "cyapi.h"
+@@ -22,9 +24,11 @@
+ EXPORTC void STDCALL SetQHYCCDLogLevel(uint8_t logLevel);
+ 
+ #if defined(__linux__ )&&!defined (__ANDROID__)
+-
++#ifdef __cplusplus
+ EXPORTC void STDCALL SetQHYCCDLogFunction(std::function<void(const std::string &message)> logFunction);
+-
++#else
++EXPORTC void STDCALL SetQHYCCDLogFunction(void (*) ( const char* ));
++#endif
+ #endif
+ 
+ EXPORTC void STDCALL EnableQHYCCDMessage(bool enable);
+--- usr/local/include/qhyccdstruct.h	2019-02-14 22:59:02.526257129 +0000
++++ usr/local/include/qhyccdstruct.h	2019-02-14 23:02:15.622657615 +0000
+@@ -16,9 +16,15 @@
+ #define EXPORTC extern "C"
+ #endif
+ #else
++#ifdef __cplusplus
+ #define EXPORTFUNC extern "C"
+ #define STDCALL
+ #define EXPORTC extern "C"
++#else
++#define EXPORTFUNC
++#define STDCALL
++#define EXPORTC
++#endif
+ #endif
+ 
+ /**
+@@ -74,7 +80,7 @@
+ }
+ CCDREG;
+ 
+-struct BIOREG
++typedef struct BIOREG
+ {
+   uint16_t LineSize;
+   uint16_t PatchNumber;
+@@ -86,7 +92,7 @@
+   uint8_t  BIOCCD_Mode;
+   uint8_t  BIOCCD_Video;
+   uint8_t  SDRAM_Bypass;
+-};
++} BIOREG;
+ 
+ 
+ 
+@@ -127,7 +133,7 @@
+  *
+  * List of the function could be control
+  */
+-enum CONTROL_ID
++typedef enum CONTROL_ID
+ {
+   CONTROL_BRIGHTNESS = 0, //!< image brightness
+   CONTROL_CONTRAST,       //!< image contrast
+@@ -194,22 +200,22 @@
+ 
+   CAM_SINGLEFRAMEMODE,
+   CAM_LIVEVIDEOMODE
+-};
++} CONTROL_ID;
+ 
+ /**
+  * debayer mode for mono to color */
+-enum BAYER_ID
++typedef enum BAYER_ID
+ {
+   BAYER_GB = 1,
+   BAYER_GR,
+   BAYER_BG,
+   BAYER_RG
+-};
++} BAYER_ID;
+ 
+-enum CodecID
++typedef enum CodecID
+ {
+   NONE_CODEC,
+   H261_CODEC
+-};
++} CodecID;
+ 
+ #endif

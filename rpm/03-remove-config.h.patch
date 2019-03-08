@@ -1,0 +1,23 @@
+Remove non-existent config.h from headers
+--- usr/local/include/qhyccdstruct.h	2019-02-12 19:45:57.000000000 +0000
++++ usr/local/include/qhyccdstruct.h	2019-02-14 22:22:27.902581207 +0000
+@@ -1,9 +1,3 @@
+-
+-#include "config.h"
+-
+-
+-
+-
+ #if defined (_WIN32)
+ #include <windows.h>
+ #endif
+--- usr/local/include/qhyccd.h	2019-02-12 19:45:57.000000000 +0000
++++ usr/local/include/qhyccd.h	2019-02-14 22:25:53.142587775 +0000
+@@ -3,7 +3,6 @@
+ #include "qhyccdcamdef.h"
+ #include "qhyccdstruct.h"
+ #include "stdint.h"
+-#include "config.h"
+ #include <functional>
+ 
+ #if defined (_WIN32)

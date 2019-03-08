@@ -1,0 +1,14 @@
+Create the pkg-config file
+--- libqhyccd.pc.in	1970-01-01 01:00:00.000000000 +0100
++++ libqhyccd.pc.in	2016-11-05 23:11:43.247858211 +0000
+@@ -0,0 +1,9 @@
++libdir=@LIBDIR@
++includedir=/usr/include
++
++Name: libqhyccd
++Description: QHY camera interface library
++URL: https://www.qhyccd.com/
++Version: @VERSION@
++Libs: -L${libdir} -lqhyccd
++Cflags: -I${includedir}
+

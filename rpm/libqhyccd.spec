@@ -1,14 +1,14 @@
 %define debug_package %{nil}
 
 Name:           libqhyccd
-Version:        4.0.15
-Release:        1
+Version:        4.0.16
+Release:        0
 Summary:        QHY camera SDK
 License:        expat
 URL:            https://www.qhyccd.com/
 Prefix:         %{_prefix}
 Provides:       libqhyccd = %{version}-%{release}
-Obsoletes:      libqhyccd < 4.0.15
+Obsoletes:      libqhyccd < 4.0.16
 Requires:       libusbx
 Requires:       fxload
 Requires:       libqhyccd-firmware = %{version}-%{release}
@@ -28,7 +28,7 @@ Summary:        Development files for %{name}
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Provides:       libqhyccd-devel = %{version}-%{release}
-Obsoletes:      libqhyccd-devel < 4.0.15
+Obsoletes:      libqhyccd-devel < 4.0.16
 
 %description    devel
 The %{name}-devel package contains libraries and header files for
@@ -37,7 +37,7 @@ developing applications that use %{name}.
 %package        firmware
 Summary:        Firmware files for %{name}
 Provides:       libqhyccd-firmware = %{version}-%{release}
-Obsoletes:      libqhyccd-firmware < 4.0.15
+Obsoletes:      libqhyccd-firmware < 4.0.16
 BuildArch:	noarch
 
 %description    firmware
@@ -120,6 +120,6 @@ cp lib/firmware/qhy/* %{buildroot}/lib/firmware/qhy
 /lib/firmware/qhy/*
 
 %changelog
-* Wed Mar 6 2019 James Fidell <james@openastroproject.org> - 4.0.15-1
+* Wed Mar 20 2019 James Fidell <james@openastroproject.org> - 4.0.16-0
 - Initial RPM release
 

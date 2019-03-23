@@ -1,6 +1,6 @@
-Allow the header files to compiler in C as well as C++
---- usr/local/include/qhyccd.h	2019-02-14 22:59:02.270267224 +0000
-+++ usr/local/include/qhyccd.h	2019-02-14 22:59:40.842652662 +0000
+Make compile possible in C
+--- ./usr/local/include/qhyccd.h	2019-03-22 21:43:18.367900936 +0000
++++ ./usr/local/include/qhyccd.h	2019-03-22 21:43:43.283927429 +0000
 @@ -5,7 +5,9 @@
  #include <qhyccderr.h>
  #include <qhyccdcamdef.h>
@@ -25,8 +25,8 @@ Allow the header files to compiler in C as well as C++
  #endif
  
  EXPORTC void STDCALL EnableQHYCCDMessage(bool enable);
---- usr/local/include/qhyccdstruct.h	2019-02-14 22:59:02.526257129 +0000
-+++ usr/local/include/qhyccdstruct.h	2019-02-14 23:02:15.622657615 +0000
+--- ./usr/local/include/qhyccdstruct.h	2019-03-22 21:43:18.202907383 +0000
++++ ./usr/local/include/qhyccdstruct.h	2019-03-22 21:43:43.480919731 +0000
 @@ -16,9 +16,15 @@
  #define EXPORTC extern "C"
  #endif
@@ -70,7 +70,7 @@ Allow the header files to compiler in C as well as C++
  {
    CONTROL_BRIGHTNESS = 0, //!< image brightness
    CONTROL_CONTRAST,       //!< image contrast
-@@ -194,22 +200,22 @@
+@@ -194,23 +200,23 @@
  
    CAM_SINGLEFRAMEMODE,
    CAM_LIVEVIDEOMODE
@@ -97,4 +97,5 @@ Allow the header files to compiler in C as well as C++
 -};
 +} CodecID;
  
- #endif
+ typedef struct _QHYCameraParam
+ {

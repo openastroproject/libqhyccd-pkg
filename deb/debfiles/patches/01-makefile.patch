@@ -24,9 +24,9 @@ Create a makefile to install the pre-built binaries and headers etc.
 +		cp $(SRCDIR)/usr/local/lib/armv8/libqhyccd*.so.$(VERSION) $(LIBDIR); \
 +		cp $(SRCDIR)/sbin/armv8/fxload $(SBINDIR)/qhyfxload;; \
 +	armhf) \
-+		cp $(SRCDIR)/usr/local/lib/armv7/libqhyccd.a $(LIBDIR); \
-+		cp $(SRCDIR)/usr/local/lib/armv7/libqhyccd*.so.$(VERSION) $(LIBDIR); \
-+		cp $(SRCDIR)/sbin/armv7/fxload $(SBINDIR)/qhyfxload;; \
++		cp $(SRCDIR)/usr/local/lib/arm7/libqhyccd.a $(LIBDIR); \
++		cp $(SRCDIR)/usr/local/lib/arm7/libqhyccd*.so.$(VERSION) $(LIBDIR); \
++		cp $(SRCDIR)/sbin/arm7/fxload $(SBINDIR)/qhyfxload;; \
 +	esac
 +	ln -sf libqhyccd.so.$(VERSION) $(LIBDIR)/libqhyccd.so.$(MAJOR_REV)
 +	ln -sf libqhyccd.so.$(VERSION) $(LIBDIR)/libqhyccd.so

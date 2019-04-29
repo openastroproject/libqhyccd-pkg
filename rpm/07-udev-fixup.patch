@@ -240,19 +240,19 @@ firmware
 +# idVendor and idProduct match Cypress FX2 USB chips.
 +
 +ACTION!="add", GOTO="qhy-rules-end"
-+SUBSYSTEMS=="usb", GOTO="qhy-vipi"
++SUBSYSTEM=="usb", GOTO="qhy-vipi"
 +GOTO="qhy-rules-end"
 +
 +LABEL="qhy-vipi"
 +
 +# Other Vendor
-+SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", TAG+="uaccess"
-+SUBSYSTEMS=="usb", ATTRS{idVendor}=="1856", TAG+="uaccess"
-+SUBSYSTEMS=="usb", ATTRS{idVendor}=="1781", TAG+="uaccess"
-+SUBSYSTEMS=="usb", ATTRS{idVendor}=="04b4", TAG+="uaccess"
-+SUBSYSTEMS=="usb", ATTRS{idVendor}=="0547", TAG+="uaccess"
++SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", TAG+="uaccess"
++SUBSYSTEM=="usb", ATTRS{idVendor}=="1856", TAG+="uaccess"
++SUBSYSTEM=="usb", ATTRS{idVendor}=="1781", TAG+="uaccess"
++SUBSYSTEM=="usb", ATTRS{idVendor}=="04b4", TAG+="uaccess"
++SUBSYSTEM=="usb", ATTRS{idVendor}=="0547", TAG+="uaccess"
 +
 +# Stock QHY
-+SUBSYSTEMS=="usb", ATTRS{idVendor}=="1618", TAG+="uaccess"
++SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", TAG+="uaccess"
 +
 +LABEL="qhy-rules-end"

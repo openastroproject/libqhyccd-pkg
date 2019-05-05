@@ -1,0 +1,42 @@
+Use better-defined include paths
+diff -urN usr/local/include/qhyccd.h usr/local/include/qhyccd.h
+--- usr/local/include/qhyccd.h	2019-04-22 21:57:44.000000000 +0100
++++ usr/local/include/qhyccd.h	2019-05-05 00:54:52.869808036 +0100
+@@ -1,10 +1,10 @@
+ 
+-#include "qhyccdinternal.h"
+-#include "qhyccderr.h"
+-#include "qhyccdcamdef.h"
+-#include "qhyccdstruct.h"
+-#include "stdint.h"
+-#include "config.h"
++#include <qhyccd/qhyccdinternal.h>
++#include <qhyccd/qhyccderr.h>
++#include <qhyccd/qhyccdcamdef.h>
++#include <qhyccd/qhyccdstruct.h>
++#include <stdint.h>
++#include <qhyccd/config.h>
+ #include <functional>
+ 
+ 
+diff -urN usr/local/include/qhyccdstruct.h usr/local/include/qhyccdstruct.h
+--- usr/local/include/qhyccdstruct.h	2019-04-22 21:57:44.000000000 +0100
++++ usr/local/include/qhyccdstruct.h	2019-05-05 00:55:21.687681889 +0100
+@@ -1,6 +1,6 @@
+ 
+-#include "qhyccdinternal.h"
+-#include "config.h"
++#include <qhyccd/qhyccdinternal.h>
++#include <qhyccd/config.h>
+ 
+ 
+ 
+@@ -29,7 +29,7 @@
+ #define EXPORTC extern "C"
+ #endif
+ 
+-#include "stdint.h"
++#include <stdint.h>
+ 
+ 
+ #if defined (_WIN32)

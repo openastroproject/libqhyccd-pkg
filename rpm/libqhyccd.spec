@@ -1,14 +1,14 @@
 %define debug_package %{nil}
 
 Name:           libqhyccd
-Version:        4.0.16
+Version:        5.0.4
 Release:        0
 Summary:        QHY camera SDK
 License:        expat
 URL:            https://www.qhyccd.com/
 Prefix:         %{_prefix}
 Provides:       libqhyccd = %{version}-%{release}
-Obsoletes:      libqhyccd < 4.0.16
+Obsoletes:      libqhyccd < 5.0.4
 Requires:       libusbx
 Requires:       fxload
 Requires:       libqhyccd-firmware = %{version}-%{release}
@@ -28,7 +28,7 @@ Summary:        Development files for %{name}
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Provides:       libqhyccd-devel = %{version}-%{release}
-Obsoletes:      libqhyccd-devel < 4.0.16
+Obsoletes:      libqhyccd-devel < 5.0.4
 
 %description    devel
 The %{name}-devel package contains libraries and header files for
@@ -37,7 +37,7 @@ developing applications that use %{name}.
 %package        firmware
 Summary:        Firmware files for %{name}
 Provides:       libqhyccd-firmware = %{version}-%{release}
-Obsoletes:      libqhyccd-firmware < 4.0.16
+Obsoletes:      libqhyccd-firmware < 5.0.4
 BuildArch:	noarch
 
 %description    firmware
@@ -59,7 +59,7 @@ sed -e "s!@LIBDIR@!%{_libdir}!g" -e "s!@VERSION@!%{version}!g" < \
 
 %install
 mkdir -p %{buildroot}%{_libdir}/pkgconfig
-mkdir -p %{buildroot}%{_includedir}
+mkdir -p %{buildroot}%{_includedir}/qhyccd
 mkdir -p %{buildroot}%{_docdir}/%{name}-%{version}
 mkdir -p %{buildroot}/sbin
 mkdir -p %{buildroot}%{_udevrulesdir}
@@ -83,12 +83,12 @@ case %{_arch} in
 esac
 
 ln -sf %{name}.so.%{version} %{buildroot}%{_libdir}/%{name}.so.4
-cp usr/local/include/qhyccd*.h %{buildroot}%{_includedir}
+cp usr/local/include/*.h %{buildroot}%{_includedir}/qhyccd
 cp *.pc %{buildroot}%{_libdir}/pkgconfig
 cp usr/local/doc/* %{buildroot}%{_docdir}/%{name}-%{version}
 cp -r usr/local/testapp %{buildroot}%{_docdir}/%{name}-%{version}
 cp -r usr/local/cmake_modules %{buildroot}%{_docdir}/%{name}-%{version}
-cp lib/udev/rules.d/85-qhyccd.rules %{buildroot}%{_udevrulesdir}
+cp lib/udev/rules.d/85-qhyccd.rules %{buildroot}%{_udevrulesdir}/70-qhyccd.rules
 cp lib/firmware/qhy/* %{buildroot}/lib/firmware/qhy
 
 %post
@@ -108,7 +108,7 @@ cp lib/firmware/qhy/* %{buildroot}/lib/firmware/qhy
 %{_libdir}/*.so.*
 
 %files devel
-%{_includedir}/qhyccd*.h
+%{_includedir}/qhyccd/*.h
 %{_libdir}/pkgconfig/%{name}*.pc
 %{_libdir}/*.a
 %{_docdir}/%{name}-%{version}/*.pdf
@@ -120,6 +120,6 @@ cp lib/firmware/qhy/* %{buildroot}/lib/firmware/qhy
 /lib/firmware/qhy/*
 
 %changelog
-* Wed Mar 20 2019 James Fidell <james@openastroproject.org> - 4.0.16-0
+* Sun May 5 2019 James Fidell <james@openastroproject.org> - 5.0.4-0
 - Initial RPM release
 

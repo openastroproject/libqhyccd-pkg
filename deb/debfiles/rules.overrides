@@ -10,4 +10,4 @@ override_dh_auto_install:
 		PKGCONFDIR=$(CURDIR)/debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/pkgconfig \
 		UDEVDIR=$(CURDIR)/debian/tmp/lib/udev/rules.d \
 		FIRMWAREDIR=$(CURDIR)/debian/tmp/lib/firmware/qhy \
-		VERSION=DEBVERSION MAJOR_REV=4
+		VERSION=DEBVERSION MAJOR_REV=5

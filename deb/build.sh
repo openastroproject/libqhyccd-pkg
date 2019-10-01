@@ -78,12 +78,19 @@ do
   do
     quilt --quiltrc=$quiltconf add $f
   done
-pwd
   patch -p0 < ../debfiles/patches/$p
+	if [ $? -ne 0 ]; then
+		echo "exiting..."
+		exit 1
+	fi
   quilt --quiltrc=$quiltconf refresh
 done
 
 dpkg-buildpackage -us -uc
+if [ $? -ne 0 ]; then
+	echo "exiting..."
+	exit 1
+fi
 
 echo "Now run:"
 echo

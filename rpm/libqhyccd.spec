@@ -1,14 +1,14 @@
 %define debug_package %{nil}
 
 Name:           libqhyccd
-Version:        5.0.4
+Version:        6.0.1
 Release:        0
 Summary:        QHY camera SDK
 License:        expat
 URL:            https://www.qhyccd.com/
 Prefix:         %{_prefix}
 Provides:       libqhyccd = %{version}-%{release}
-Obsoletes:      libqhyccd < 5.0.4
+Obsoletes:      libqhyccd < 6.0.1
 Requires:       libusbx
 Requires:       fxload
 Requires:       libqhyccd-firmware = %{version}-%{release}
@@ -17,8 +17,7 @@ Patch0:         02-pkg-config.patch
 Patch1:         03-remove-config.h.patch
 Patch2:         04-tidy-includes.patch
 Patch3:         05-compile-under-c.patch
-Patch4:         06-remove-proto-varnames.patch
-Patch5:         07-udev-fixup.patch
+Patch4:         06-udev-fixup.patch
 
 %description
 libqhyccd is a user-space driver for QHY astronomy cameras.
@@ -28,7 +27,7 @@ Summary:        Development files for %{name}
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Provides:       libqhyccd-devel = %{version}-%{release}
-Obsoletes:      libqhyccd-devel < 5.0.4
+Obsoletes:      libqhyccd-devel < 6.0.1
 
 %description    devel
 The %{name}-devel package contains libraries and header files for
@@ -37,7 +36,7 @@ developing applications that use %{name}.
 %package        firmware
 Summary:        Firmware files for %{name}
 Provides:       libqhyccd-firmware = %{version}-%{release}
-Obsoletes:      libqhyccd-firmware < 5.0.4
+Obsoletes:      libqhyccd-firmware < 6.0.1
 BuildArch:	noarch
 
 %description    firmware
@@ -50,7 +49,6 @@ The %{name}-firmware package contains firmware files for QHY cameras
 %patch2 -p0
 %patch3 -p0
 %patch4 -p0
-%patch5 -p0
 
 %build
 
@@ -82,7 +80,7 @@ case %{_arch} in
     ;;
 esac
 
-ln -sf %{name}.so.%{version} %{buildroot}%{_libdir}/%{name}.so.4
+ln -sf %{name}.so.%{version} %{buildroot}%{_libdir}/%{name}.so.5
 cp usr/local/include/*.h %{buildroot}%{_includedir}/qhyccd
 cp *.pc %{buildroot}%{_libdir}/pkgconfig
 cp usr/local/doc/* %{buildroot}%{_docdir}/%{name}-%{version}
@@ -120,6 +118,6 @@ cp lib/firmware/qhy/* %{buildroot}/lib/firmware/qhy
 /lib/firmware/qhy/*
 
 %changelog
-* Sun May 5 2019 James Fidell <james@openastroproject.org> - 5.0.4-0
+* Tue Oct 1 2019 James Fidell <james@openastroproject.org> - 6.0.1-0
 - Initial RPM release
 

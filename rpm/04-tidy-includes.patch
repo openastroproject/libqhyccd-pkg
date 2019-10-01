@@ -1,7 +1,7 @@
 Clean up #ifndef/#defines
 diff -urN usr/local/include/config.h usr/local/include/config.h
---- usr/local/include/config.h	2019-05-05 00:59:27.312083227 +0100
-+++ usr/local/include/config.h	2019-05-05 01:00:08.484474244 +0100
+--- usr/local/include/config.h	2019-06-26 09:18:18.000000000 +0100
++++ usr/local/include/config.h	2019-06-29 00:12:19.065391458 +0100
 @@ -1,5 +1,5 @@
 -#ifndef __CONFIG_H__
 -#define __CONFIG_H__
@@ -9,17 +9,17 @@ diff -urN usr/local/include/config.h usr/local/include/config.h
 +#define __QHYCCDCONFIG_H__
  
  /*
- 0, 5, 0, 4
+ 0, 5, 1, 0
 diff -urN usr/local/include/qhyccd.h usr/local/include/qhyccd.h
---- usr/local/include/qhyccd.h	2019-05-05 00:59:27.640070408 +0100
-+++ usr/local/include/qhyccd.h	2019-05-05 01:00:59.035498743 +0100
+--- usr/local/include/qhyccd.h	2019-06-28 23:29:37.443015088 +0100
++++ usr/local/include/qhyccd.h	2019-06-29 00:12:19.874361269 +0100
 @@ -1,3 +1,5 @@
 +#ifndef __QHYCCD_H__
 +#define __QHYCCD_H__
  
- #include <qhyccd/qhyccdinternal.h>
  #include <qhyccd/qhyccderr.h>
-@@ -15,9 +17,6 @@
+ #include <qhyccd/qhyccdcamdef.h>
+@@ -14,9 +16,6 @@
  #include "cyapi.h"
  #endif
  
@@ -30,26 +30,22 @@ diff -urN usr/local/include/qhyccd.h usr/local/include/qhyccd.h
  typedef CCyUSBDevice qhyccd_handle;
  #endif
 diff -urN usr/local/include/qhyccdstruct.h usr/local/include/qhyccdstruct.h
---- usr/local/include/qhyccdstruct.h	2019-05-05 00:59:27.805063962 +0100
-+++ usr/local/include/qhyccdstruct.h	2019-05-05 01:01:35.744064186 +0100
-@@ -1,18 +1,13 @@
-+#ifndef __QHYCCDSTRUCTDEF_H__
-+#define __QHYCCDSTRUCTDEF_H__
+--- usr/local/include/qhyccdstruct.h	2019-06-28 23:29:39.256948075 +0100
++++ usr/local/include/qhyccdstruct.h	2019-06-29 00:12:20.753328379 +0100
+@@ -1,14 +1,8 @@
+-
+-#include <qhyccd/config.h>
+-
+-
+-
+-
+-
+-
+ #ifndef __QHYCCDSTRUCTDEF_H__
+ #define __QHYCCDSTRUCTDEF_H__
  
- #include <qhyccd/qhyccdinternal.h>
- #include <qhyccd/config.h>
- 
--
--
--
--
- #if defined (_WIN32)
- #include <windows.h>
- #endif
- 
--#ifndef __QHYCCDSTRUCTDEF_H__
--#define __QHYCCDSTRUCTDEF_H__
--
++#include <qhyccd/config.h>
++
  #if defined (_WIN32)
  #ifndef EXPORTFUNC
  #define EXPORTFUNC extern "C" __declspec(dllexport)

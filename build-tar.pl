@@ -1,0 +1,166 @@
+#!/usr/bin/perl
+#
+# build-tar.pl
+#
+# Copyright 2019
+#   James Fidell (james@openastroproject.org)
+#
+# License:
+#
+# This file is part of the Open Astro Project.
+#
+# The Open Astro Project is free software: you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# The Open Astro Project is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with the Open Astro Project.  If not, see
+# <http://www.gnu.org/licenses/>.
+#
+
+use strict;
+use diagnostics;
+
+my $searchDir = ".";
+my $buildDir = "./build";
+
+my $verbose = 0;
+my $skipMismatches = 1;
+
+if ( !defined( $ARGV[0] )) {
+	print "usage: $0 <date>\n";
+	print "  where <date> is the date (YYYYMMDD) from the tar file name\n\n";
+	exit ( -1 );
+}
+
+if ( -d $buildDir ) {
+	die "$buildDir already exists";
+}
+
+mkdir $buildDir || die "Can't create directory $buildDir: $!";
+
+my $date = $ARGV[0];
+opendir ( my $dirHandle, $searchDir ) ||
+	die "Can't open directory for read: $!";
+my @tarFiles = grep {
+	/qhyccd_V${date}_[0-9]\.tgz$/ && -f "$searchDir/$_"
+} readdir ( $dirHandle );
+closedir $dirHandle;
+
+if ( @tarFiles < 1 ) {
+	die "No matching files found in $searchDir";
+}
+
+chdir $buildDir || die "Can't change to directory $buildDir: $!";
+
+my $version = '';
+foreach ( @tarFiles ) {
+  my $tarFile = $_;
+	print "processing tar file: $tarFile\n" if ( $verbose );
+	my $topDir = substr $tarFile, 0, -4;
+	my $arch = '';
+	if ( substr ( $topDir, 0, 10 ) eq 'LINUX_X64_' ) {
+		$arch = 'x64';
+	} elsif ( substr ( $topDir, 0, 6 ) eq 'LINUX_' ) {
+		$arch = 'x86';
+	} elsif ( substr ( $topDir, 0, 8 ) eq 'AARCH64_' ) {
+		$arch = 'aarch64';
+	} elsif ( $topDir =~ /^RPI34?_/ ) {
+		$arch = 'armhf';
+	}
+	if ( $arch eq '' ) {
+		die "Don't recognise architecture for $topDir";
+	}
+	print "architecture = $arch\n" if ( $verbose );
+	my $cmd = "tar zxvf ../$tarFile";
+  my @files = split /\n/, `$cmd`;
+	if ( $version eq '' ) {
+		my @matches = grep { /\/libqhyccd.so\.\d+\.\d+\.\d+$/ } @files;
+		if ( @matches < 1 ) {
+			die "No matching file found for .../libqhyccd.so\\.\\d+\\.\\d+\\.\\d+";
+		}
+		( $version ) = $matches[0] =~ /\/libqhyccd.so\.(\d+\.\d+\.\d+)$/;
+		if ( !defined ( $version )) {
+			die "Error matching version string from '${matches[0]}'";
+		}
+		print "Library version appears to be $version\n";
+	}
+	foreach ( @files ) {
+		my $fullname = $_;
+		if ( -d $fullname ) {
+			# print "skipping directory $fullname\n" if ( $verbose );
+			next;
+		}
+    if ( -f $fullname || -l $fullname ) {
+			# strip off the dir name
+			my $filename = $fullname;
+			$filename =~ s!^(\./)?$topDir/!!;
+			my ( $dirname, $basename );
+			if ( $filename =~ m!/! ) {
+				( $dirname, $basename ) = $filename =~ /^(.*)\/(.*)$/;
+			} else {
+				$dirname = '';
+				$basename = $filename;
+			}
+			if ( $dirname eq 'usr/local/cmake_modules' ||
+					$dirname =~ m!^usr/local/testapp! ||
+					$dirname eq 'usr/local/include' ||
+					$dirname eq 'usr/local/doc' ||
+					$dirname eq 'lib/firmware/qhy' ||
+					$dirname eq 'lib/udev/rules.d' ||
+					$dirname eq 'usr/local/udev' ||
+					$dirname eq 'etc/udev/rules.d' ) {
+				$dirname = "libqhyccd-$version/$dirname";
+				if ( -f "$dirname/$basename" ) {
+					my $same = system ( "cmp -s $fullname $dirname/$basename" );
+					if ( $same != 0 ) {
+						if ( $skipMismatches ) {
+							print "$fullname is not the same in all architectures\n";
+							next;
+						} else {
+							die "$fullname is not the same in all architectures";
+						}
+					}
+				}
+				if ( ! -d $dirname ) {
+					print "making directory $dirname\n" if ( $verbose );
+					system ( "mkdir -p $dirname" ) == 0 or
+							die "Can't mkdir -p $dirname: $!";
+				}
+				print "moving $fullname to $dirname/$basename\n" if ( $verbose );
+				rename $fullname, "$dirname/$basename" ||
+						die "Can't mv $fullname to $dirname/$basename: $!";
+				next;
+			}
+			# ignore <something>.sh scripts
+			if ( substr ( $basename, -3, 3 ) eq '.sh' ) {
+				print "ignoring script file $fullname\n" if ( $verbose );
+				next;
+			}
+			if ( $dirname eq 'usr/local/lib' ||
+					$dirname eq 'sbin' ) {
+				$dirname = "libqhyccd-$version/$dirname/$arch";
+				if ( ! -d $dirname ) {
+					print "making directory $dirname\n" if ( $verbose );
+					system ( "mkdir -p $dirname" ) == 0 or
+							die "Can't mkdir -p $dirname: $!";
+				}
+				print "moving $fullname to $dirname/$basename\n" if ( $verbose );
+				rename $fullname, "$dirname/$basename" ||
+						die "Can't mv $fullname to $dirname/$basename: $!";
+				next;
+			}
+			print "Don't know what to do with $fullname\n";
+		}
+	}
+}
+
+print "Now copy over any missing firmware files and run:\n";
+print "  cd $buildDir\n";
+print "  tar zcf ../libqhyccd-$version.tar.gz ./libqhyccd-$version\n";

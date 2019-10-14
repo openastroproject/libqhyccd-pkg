@@ -2,15 +2,34 @@ Clean up udev rules
 diff -urN lib/udev/rules.d/85-qhyccd.rules lib/udev/rules.d/85-qhyccd.rules
 --- lib/udev/rules.d/85-qhyccd.rules	2019-09-25 00:08:48.000000000 +0100
 +++ lib/udev/rules.d/85-qhyccd.rules	2019-10-01 22:41:03.468650680 +0100
-@@ -19,189 +19,204 @@
+@@ -22,136 +22,156 @@
+ # 1. Increase usbfs memory limit
+ #===============================================================================
+ # QHY-Based camera by other vendors
+-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", RUN+="/bin/sh -c '/bin/echo 256 >/sys/module/usbcore/parameters/usbfs_memory_mb'"
+-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1856", RUN+="/bin/sh -c '/bin/echo 256 >/sys/module/usbcore/parameters/usbfs_memory_mb'"
+-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1781", RUN+="/bin/sh -c '/bin/echo 256 >/sys/module/usbcore/parameters/usbfs_memory_mb'"
+-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="04b4", RUN+="/bin/sh -c '/bin/echo 256 >/sys/module/usbcore/parameters/usbfs_memory_mb'"
+-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="0547", RUN+="/bin/sh -c '/bin/echo 256 >/sys/module/usbcore/parameters/usbfs_memory_mb'"
++
++SUBSYSTEM=="usb", ACTION=="add", ATTR{idVendor}=="16c0", RUN+="/bin/sh -c 'test -f /sys/module/usbcore/parameters/usbfs_memory_mb && test `cat /sys/module/usbcore/parameters/usbfs_memory_mb` -lt 256 && echo 256 >/sys/module/usbcore/parameters/usbfs_memory_mb'"
++SUBSYSTEM=="usb", ACTION=="add", ATTR{idVendor}=="1856", RUN+="/bin/sh -c 'test -f /sys/module/usbcore/parameters/usbfs_memory_mb && test `cat /sys/module/usbcore/parameters/usbfs_memory_mb` -lt 256 && echo 256 >/sys/module/usbcore/parameters/usbfs_memory_mb'"
++SUBSYSTEM=="usb", ACTION=="add", ATTR{idVendor}=="1781", RUN+="/bin/sh -c 'test -f /sys/module/usbcore/parameters/usbfs_memory_mb && test `cat /sys/module/usbcore/parameters/usbfs_memory_mb` -lt 256 && echo 256 >/sys/module/usbcore/parameters/usbfs_memory_mb'"
++SUBSYSTEM=="usb", ACTION=="add", ATTR{idVendor}=="04b4", RUN+="/bin/sh -c 'test -f /sys/module/usbcore/parameters/usbfs_memory_mb && test `cat /sys/module/usbcore/parameters/usbfs_memory_mb` -lt 256 && echo 256 >/sys/module/usbcore/parameters/usbfs_memory_mb'"
++SUBSYSTEM=="usb", ACTION=="add", ATTR{idVendor}=="0547", RUN+="/bin/sh -c 'test -f /sys/module/usbcore/parameters/usbfs_memory_mb && test `cat /sys/module/usbcore/parameters/usbfs_memory_mb` -lt 256 && echo 256 >/sys/module/usbcore/parameters/usbfs_memory_mb'"
+ # QHYCCD
+-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", RUN+="/bin/sh -c '/bin/echo 256 >/sys/module/usbcore/parameters/usbfs_memory_mb'"
++SUBSYSTEM=="usb", ACTION=="add", ATTR{idVendor}=="1618", RUN+="/bin/sh -c 'test -f /sys/module/usbcore/parameters/usbfs_memory_mb && test `cat /sys/module/usbcore/parameters/usbfs_memory_mb` -lt 256 && echo 256 >/sys/module/usbcore/parameters/usbfs_memory_mb'"
+ 
+ #===============================================================================
+-# 2. Pre-enumerated device IDs:
++# 1. Pre-enumerated device IDs:
  #===============================================================================
  #Van Ooijen Technische Informatica
  
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="081a", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME} -s /lib/firmware/qhy/QHY5LOADER.HEX"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="0818", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME} -s /lib/firmware/qhy/QHY5LOADER.HEX"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="2972", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY8.HEX -D $env{DEVNAME}"
-+SUBSYSTEM=="usb", ACTION=="add", ATTR{idVendor}=="16c0", RUN+="/bin/sh -c 'test -f /sys/module/usbcore/parameters/usbfs_memory_mb && test `cat /sys/module/usbcore/parameters/usbfs_memory_mb` -lt 256 && echo 256 >/sys/module/usbcore/parameters/usbfs_memory_mb'"
-+
 +ACTION!="add", GOTO="qhy_firmware_end"
 +SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", GOTO="qhy_firmware_test"
 +SUBSYSTEM!="usb_device", GOTO="qhy_firmware_end"
@@ -82,14 +101,14 @@ diff -urN lib/udev/rules.d/85-qhyccd.rules lib/udev/rules.d/85-qhyccd.rules
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="b285", RUN+="/sbin/qhyfxload -t fx2lp -I /lib/firmware/qhy/IMG2S.HEX -D $env{DEVNAME}"
  
  #QHY5 5II Guider
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="296c", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME}"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="296c", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME}"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0901", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME}"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1002", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME}"
-+ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="296c", RUN+="/sbin/qhyfxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME}"
-+ATTRS{idVendor}=="1618", ATTRS{idProduct}=="296c", RUN+="/sbin/qhyfxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME}"
-+ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0901", RUN+="/sbin/qhyfxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME}"
-+ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1002", RUN+="/sbin/qhyfxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME}"
+-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="296c", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME} -s /lib/firmware/qhy/QHY5LOADER.HEX"
+-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="296c", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME} -s /lib/firmware/qhy/QHY5LOADER.HEX"
+-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0901", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME} -s /lib/firmware/qhy/QHY5LOADER.HEX"
+-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1002", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME} -s /lib/firmware/qhy/QHY5LOADER.HEX"
++ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="296c", RUN+="/sbin/qhyfxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME} -s /lib/firmware/qhy/QHY5LOADER.HEX"
++ATTRS{idVendor}=="1618", ATTRS{idProduct}=="296c", RUN+="/sbin/qhyfxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME} -s /lib/firmware/qhy/QHY5LOADER.HEX"
++ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0901", RUN+="/sbin/qhyfxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME} -s /lib/firmware/qhy/QHY5LOADER.HEX"
++ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1002", RUN+="/sbin/qhyfxload -t fx2 -I /lib/firmware/qhy/QHY5.HEX -D $env{DEVNAME} -s /lib/firmware/qhy/QHY5LOADER.HEX"
  
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0920", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY5II.HEX -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0920", RUN+="/sbin/qhyfxload -t fx2 -I /lib/firmware/qhy/QHY5II.HEX -D $env{DEVNAME}"
@@ -136,7 +155,6 @@ diff -urN lib/udev/rules.d/85-qhyccd.rules lib/udev/rules.d/85-qhyccd.rules
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1630", RUN+="/sbin/qhyfxload -t fx2lp -I /lib/firmware/qhy/IC16803.HEX -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1620", RUN+="/sbin/qhyfxload -t fx2lp -I /lib/firmware/qhy/IC16200A.HEX -D $env{DEVNAME}"
  
- 
  # QHYCCD 5III series (5:QHY5III174,QHY5III178,QHY5III185,QHY5III224,QHY5III290)
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0174", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY5III174.img -D $env{DEVNAME}"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0178", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY5III178.img -D $env{DEVNAME}"
@@ -149,24 +167,23 @@ diff -urN lib/udev/rules.d/85-qhyccd.rules lib/udev/rules.d/85-qhyccd.rules
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0224", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY5III224.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0290", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY5III290.img -D $env{DEVNAME}"
  
- 
  #QHYCCD Scientific Camera (7:QHY42,QHY42PRO,QHY2020,QHY4040,QHY6060,QHY411,QHY461)
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4200", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY42.img -D $env{DEVNAME}"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4202", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY42PRO.img -D $env{DEVNAME}"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="2020", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY2020.img -D $env{DEVNAME}"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4040", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY4040.img -D $env{DEVNAME}"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="6060", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY6060.img -D $env{DEVNAME}"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c411", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY411.img -D $env{DEVNAME}"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0204", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY0204.img -D $env{DEVNAME}"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c413", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY411ERIS.img -D $env{DEVNAME}"
+-#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c411", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY411.img -D $env{DEVNAME}"
 -#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c461", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY461.img -D $env{DEVNAME}"
+-
+-
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4200", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY42.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4202", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY42PRO.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="2020", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY2020.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4040", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY4040.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="6060", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY6060.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c411", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY411.img -D $env{DEVNAME}"
-+ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0204", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY0204.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c413", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY411ERIS.img -D $env{DEVNAME}"
 +#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c461", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY461.img -D $env{DEVNAME}"
  
@@ -191,11 +208,7 @@ diff -urN lib/udev/rules.d/85-qhyccd.rules lib/udev/rules.d/85-qhyccd.rules
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c247", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY247.img -D $env{DEVNAME}"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c128", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY128.img -D $env{DEVNAME}"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c367", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY367.img -D $env{DEVNAME}"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c600", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY600.img -D $env{DEVNAME}"
--
--
--
--
+-#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c600", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY600.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c183", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY183.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c163", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY163.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c294", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY294.img -D $env{DEVNAME}"
@@ -210,144 +223,33 @@ diff -urN lib/udev/rules.d/85-qhyccd.rules lib/udev/rules.d/85-qhyccd.rules
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0005", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/SLAVEFIFO.HEX -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0932", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY5V.HEX -D $env{DEVNAME}"
 +ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="2980", RUN+="/sbin/fxload -t fx2 -I /lib/firmware/qhy/QHY6PRO.HEX -D $env{DEVNAME}"
- 
++
 +LABEL="qhy_firmware_end"
- 
++
  
  #===============================================================================
- # 2. Post-enumeration device IDs:
+ # 3. Post-enumeration device IDs:
  #===============================================================================
- # Other Vendor
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="a618", MODE="0666", GROUP="plugdev"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="081d", MODE="0666", GROUP="plugdev"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="081e", MODE="0666", GROUP="plugdev"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="296d", MODE="0666", GROUP="plugdev"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="2971", MODE="0666", GROUP="plugdev"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="2972", MODE="0666", GROUP="plugdev"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1856", ATTRS{idProduct}=="0011", MODE="0666", GROUP="plugdev"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1781", ATTRS{idProduct}=="0c7c", MODE="0666", GROUP="plugdev"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="04b4", ATTRS{idProduct}=="8613", MODE="0666", GROUP="plugdev"
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="0547", ATTRS{idProduct}=="1002", MODE="0666", GROUP="plugdev"
+-# QHY-Based camera by other vendors
+-SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", MODE="0666"
+-SUBSYSTEMS=="usb", ATTRS{idVendor}=="1856", MODE="0666"
+-SUBSYSTEMS=="usb", ATTRS{idVendor}=="1781", MODE="0666"
+-SUBSYSTEMS=="usb", ATTRS{idVendor}=="04b4", MODE="0666"
+-SUBSYSTEMS=="usb", ATTRS{idVendor}=="0547", MODE="0666"
++# Other Vendor
 +
 +# This is the ID presented once the firmware (if any) has been loaded.
 +ACTION!="add", GOTO="qhy_rules_end"
 +SUBSYSTEM!="usb", GOTO="qhy_rules_end"
 +
-+ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="a618", TAG+="uaccess"
-+ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="081d", TAG+="uaccess"
-+ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="081e", TAG+="uaccess"
-+ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="296d", TAG+="uaccess"
-+ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="2971", TAG+="uaccess"
-+ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="2972", TAG+="uaccess"
++ATTRS{idVendor}=="16c0", TAG+="uaccess"
 +ATTRS{idVendor}=="1856", ATTRS{idProduct}=="0011", TAG+="uaccess"
 +ATTRS{idVendor}=="1781", ATTRS{idProduct}=="0c7c", TAG+="uaccess"
 +ATTRS{idVendor}=="04b4", ATTRS{idProduct}=="8613", TAG+="uaccess"
 +ATTRS{idVendor}=="0547", ATTRS{idProduct}=="1002", TAG+="uaccess"
  
  # QHYCCD
--ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", MODE="0666", GROUP="plugdev"
+-SUBSYSTEMS=="usb", ATTRS{idVendor}=="1618", MODE="0666"
 +ATTRS{idVendor}=="1618", TAG+="uaccess"
- 
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="2972", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1001", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="2851", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="a285", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0921", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="8301", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="8311", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="8321", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="6941", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="6741", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="8141", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1111", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1611", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="6003", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0931", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4023", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1501", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1651", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1671", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="2951", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1621", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="8321", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0291", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0225", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0179", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0175", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0186", MODE="0666", GROUP="plugdev"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="2972", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1001", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="2851", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="a285", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0921", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="8301", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="8311", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="8321", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="6941", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="6741", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="8141", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1111", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1611", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="6003", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0931", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4023", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1501", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1651", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1671", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="2951", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1621", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="8321", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0291", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0225", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0179", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0175", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="0186", TAG+="uaccess"
- 
- # QHYCCD SCIENTIFIC CAMERA
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4041", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="2021", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4201", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4203", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c551", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c295", MODE="0666", GROUP="plugdev"
--
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="9001", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1631", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1633", MODE="0666", GROUP="plugdev"
--
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c129", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c164", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c166", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c168", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c175", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c179", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c184", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c225", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c248", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c291", MODE="0666", GROUP="plugdev"
--#ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c368", MODE="0666", GROUP="plugdev"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4041", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="2021", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4201", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="4203", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c551", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c295", TAG+="uaccess"
 +
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="9001", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1631", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="1633", TAG+="uaccess"
-+
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c129", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c164", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c166", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c168", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c175", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c179", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c184", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c225", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c248", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c291", TAG+="uaccess"
-+#ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c368", TAG+="uaccess"
- 
--#LABEL="qhy-rules-end"
 +LABEL="qhy_rules_end"

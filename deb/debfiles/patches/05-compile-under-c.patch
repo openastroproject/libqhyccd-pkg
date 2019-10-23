@@ -76,10 +76,10 @@ diff -urN usr/local/include/qhyccdstruct.h usr/local/include/qhyccdstruct.h
  {
    CONTROL_BRIGHTNESS = 0, //!< image brightness
    CONTROL_CONTRAST,       //!< image contrast
-@@ -217,23 +223,23 @@
-   CAM_IS_COLOR,
-   hasHardwareFrameCounter,
-   CONTROL_MAX_ID
+@@ -230,23 +236,23 @@
+   CONTROL_MAX_ID,
+   CAM_HUMIDITY			//!<check if camera has	 humidity sensor  20191021 LYL Unified humidity function
+ 
 -};
 +} CONTROL_ID;
  
@@ -103,5 +103,5 @@ diff -urN usr/local/include/qhyccdstruct.h usr/local/include/qhyccdstruct.h
 -};
 +} CodecID;
  
- typedef struct _QHYCamMinMaxStepValue
+ typedef struct _QHYCamReadModeInfo
  {

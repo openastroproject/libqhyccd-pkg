@@ -24,6 +24,8 @@ case $debversion in
 esac
 echo $compatversion > debfiles/compat
 
+cp ../patches/*.patch debfiles/patches
+
 tar zxf ../libqhyccd-$version.tar.gz
 cd $srcdir
 YFLAG=-y

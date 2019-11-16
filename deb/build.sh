@@ -24,6 +24,8 @@ case $debversion in
 esac
 echo $compatversion > debfiles/compat
 
+rm -fr debfiles/patches
+mkdir debfiles/patches
 cp ../patches/*.patch debfiles/patches
 
 tar zxf ../libqhyccd-$version.tar.gz

@@ -1,5 +1,5 @@
-libqhyccd (6.0.5-1) bionic; urgency=medium
+libqhyccd (20.2.3-1) bionic; urgency=medium
 
   * Initial release
 
- -- James Fidell <james@openastroproject.org>  Fri, 15 Nov 2019 19:24:00 +0000
+ -- James Fidell <james@openastroproject.org>  Tue, 4 Feb 2020 22:20:00 +0000

@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Files: debian/*
-Copyright: 2016,2018,2019 James Fidell <james@openastroproject.org>
+Copyright: 2016,2018,2019,2020 James Fidell <james@openastroproject.org>
 License: GPL-2+
  This package is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

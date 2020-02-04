@@ -26,9 +26,9 @@ diff -urN usr/local/include/qhyccd.h usr/local/include/qhyccd.h
 -#ifndef __QHYCCD_H__
 -#define __QHYCCD_H__
 -
- #if defined (_WIN32)
- typedef CCyUSBDevice qhyccd_handle;
- #endif
+ typedef void qhyccd_handle;
+ 
+ 
 diff -urN usr/local/include/qhyccdstruct.h usr/local/include/qhyccdstruct.h
 --- usr/local/include/qhyccdstruct.h	2019-06-28 23:29:39.256948075 +0100
 +++ usr/local/include/qhyccdstruct.h	2019-06-29 00:12:20.753328379 +0100

@@ -2,7 +2,7 @@
 #
 # build-tar.pl
 #
-# Copyright 2019
+# Copyright 2019,2020
 #   James Fidell (james@openastroproject.org)
 #
 # License:
@@ -34,8 +34,8 @@ my $verbose = 0;
 my $skipMismatches = 1;
 
 if ( !defined( $ARGV[0] )) {
-	print "usage: $0 <date>\n";
-	print "  where <date> is the date (YYYYMMDD) from the tar file name\n\n";
+	print "usage: $0 <version>\n";
+	print "  where <version> is 'YY.M.D' from the tar file name\n\n";
 	exit ( -1 );
 }
 
@@ -45,11 +45,11 @@ if ( -d $buildDir ) {
 
 mkdir $buildDir || die "Can't create directory $buildDir: $!";
 
-my $date = $ARGV[0];
+my $ver = $ARGV[0];
 opendir ( my $dirHandle, $searchDir ) ||
 	die "Can't open directory for read: $!";
 my @tarFiles = grep {
-	/qhyccd_V${date}_[0-9]\.tgz$/ && -f "$searchDir/$_"
+	/sdk_.*_${ver}\.tgz$/ && -f "$searchDir/$_"
 } readdir ( $dirHandle );
 closedir $dirHandle;
 
@@ -60,18 +60,19 @@ if ( @tarFiles < 1 ) {
 chdir $buildDir || die "Can't change to directory $buildDir: $!";
 
 my $version = '';
+my $newVersion;
 foreach ( @tarFiles ) {
   my $tarFile = $_;
 	print "processing tar file: $tarFile\n" if ( $verbose );
 	my $topDir = substr $tarFile, 0, -4;
 	my $arch = '';
-	if ( substr ( $topDir, 0, 10 ) eq 'LINUX_X64_' ) {
+	if ( substr ( $topDir, 0, 12 ) eq 'sdk_linux64_' ) {
 		$arch = 'x64';
-	} elsif ( substr ( $topDir, 0, 6 ) eq 'LINUX_' ) {
+	} elsif ( substr ( $topDir, 0, 12 ) eq 'sdk_linux32_' ) {
 		$arch = 'x86';
-	} elsif ( substr ( $topDir, 0, 8 ) eq 'AARCH64_' ) {
+	} elsif ( substr ( $topDir, 0, 10 ) eq 'sdk_Arm64_' ) {
 		$arch = 'aarch64';
-	} elsif ( $topDir =~ /^RPI34?_/ ) {
+	} elsif ( substr ( $topDir, 0, 10 ) eq 'sdk_arm32_' ) {
 		$arch = 'armhf';
 	}
 	if ( $arch eq '' ) {
@@ -80,16 +81,26 @@ foreach ( @tarFiles ) {
 	print "architecture = $arch\n" if ( $verbose );
 	my $cmd = "tar zxvf ../$tarFile";
   my @files = split /\n/, `$cmd`;
+	my @matches = grep { /\/libqhyccd.so\.\d+\.\d+\.\d+$/ } @files;
+	if ( @matches < 1 ) {
+		die "No matching file found for .../libqhyccd.so\\.\\d+\\.\\d+\\.\\d+";
+	}
+	( $newVersion ) = $matches[0] =~ /\/libqhyccd.so\.(\d+\.\d+\.\d+)$/;
+	if ( !defined ( $newVersion )) {
+		die "Error matching version string from '${matches[0]}'";
+	}
+	print "Library version appears to be $newVersion\n";
 	if ( $version eq '' ) {
-		my @matches = grep { /\/libqhyccd.so\.\d+\.\d+\.\d+$/ } @files;
-		if ( @matches < 1 ) {
-			die "No matching file found for .../libqhyccd.so\\.\\d+\\.\\d+\\.\\d+";
+		$version = $newVersion;
+	} else {
+		if ( $newVersion ne $version ) {
+			print "Version $newVersion doesn't match $version already seen\n";
+			if ( $newVersion ge $version ) {
+				$version = $newVersion;
+			} else {
+				die "Skipping on version mismatch";
+			}
 		}
-		( $version ) = $matches[0] =~ /\/libqhyccd.so\.(\d+\.\d+\.\d+)$/;
-		if ( !defined ( $version )) {
-			die "Error matching version string from '${matches[0]}'";
-		}
-		print "Library version appears to be $version\n";
 	}
 	foreach ( @files ) {
 		my $fullname = $_;

@@ -1,23 +1,23 @@
 %define debug_package %{nil}
 
 Name:           libqhyccd
-Version:        6.0.4
+Version:        20.5.8
 Release:        0
 Summary:        QHY camera SDK
 License:        expat
 URL:            https://www.qhyccd.com/
 Prefix:         %{_prefix}
 Provides:       libqhyccd = %{version}-%{release}
-Obsoletes:      libqhyccd < 6.0.4
+Obsoletes:      libqhyccd < 20.5.8
 Requires:       libusbx
 Requires:       fxload
 Requires:       libqhyccd-firmware = %{version}-%{release}
 Source:         libqhyccd-%{version}.tar.gz
-Patch0:         02-pkg-config.patch
-Patch1:         03-remove-config.h.patch
-Patch2:         04-tidy-includes.patch
-Patch3:         05-compile-under-c.patch
-Patch4:         06-udev-fixup.patch
+Patch0:		02-pkg-config.patch
+Patch1:		03-update-include-paths.patch
+Patch2:		04-tidy-includes.patch
+Patch3:		05-compile-under-c.patch
+Patch4:		06-udev-fixup.patch
 
 %description
 libqhyccd is a user-space driver for QHY astronomy cameras.
@@ -27,7 +27,7 @@ Summary:        Development files for %{name}
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Provides:       libqhyccd-devel = %{version}-%{release}
-Obsoletes:      libqhyccd-devel < 6.0.4
+Obsoletes:      libqhyccd-devel < 20.5.8
 
 %description    devel
 The %{name}-devel package contains libraries and header files for
@@ -36,7 +36,7 @@ developing applications that use %{name}.
 %package        firmware
 Summary:        Firmware files for %{name}
 Provides:       libqhyccd-firmware = %{version}-%{release}
-Obsoletes:      libqhyccd-firmware < 6.0.4
+Obsoletes:      libqhyccd-firmware < 20.5.8
 BuildArch:	noarch
 
 %description    firmware
@@ -118,6 +118,6 @@ cp lib/firmware/qhy/* %{buildroot}/lib/firmware/qhy
 /lib/firmware/qhy/*
 
 %changelog
-* Wed Oct 23 2019 James Fidell <james@openastroproject.org> - 6.0.4-0
+* Sun May 17 2020 James Fidell <james@openastroproject.org> - 20.5.8-0
 - Initial RPM release
 

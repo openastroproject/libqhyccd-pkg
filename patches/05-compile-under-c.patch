@@ -16,7 +16,7 @@ diff -urN usr/local/include/qhyccd.h usr/local/include/qhyccd.h
  
  #if defined (_WIN32)
  #include "cyapi.h"
-@@ -27,8 +25,11 @@
+@@ -24,8 +22,11 @@
  EXPORTC void STDCALL SetQHYCCDLogLevel(uint8_t logLevel);
  
  #if defined(__linux__ )&&!defined (__ANDROID__)
@@ -48,7 +48,7 @@ diff -urN usr/local/include/qhyccdstruct.h usr/local/include/qhyccdstruct.h
  #endif
  
  #include <stdint.h>
-@@ -94,7 +100,7 @@
+@@ -100,7 +106,7 @@
  }
  CCDREG;
  
@@ -57,7 +57,7 @@ diff -urN usr/local/include/qhyccdstruct.h usr/local/include/qhyccdstruct.h
  {
    uint16_t LineSize;
    uint16_t PatchNumber;
-@@ -106,7 +112,7 @@
+@@ -112,7 +118,7 @@
    uint8_t  BIOCCD_Mode;
    uint8_t  BIOCCD_Video;
    uint8_t  SDRAM_Bypass;
@@ -66,18 +66,18 @@ diff -urN usr/local/include/qhyccdstruct.h usr/local/include/qhyccdstruct.h
  
  
  
-@@ -147,7 +153,7 @@
+@@ -153,7 +159,7 @@
   *
   * List of the function could be control
   */
 -enum CONTROL_ID
 +typedef enum CONTROL_ID
  {
-   CONTROL_BRIGHTNESS = 0, //!< image brightness
-   CONTROL_CONTRAST,       //!< image contrast
-@@ -230,23 +236,23 @@
-   CONTROL_MAX_ID,
-   CAM_HUMIDITY			//!<check if camera has	 humidity sensor  20191021 LYL Unified humidity function
+ /*0*/  CONTROL_BRIGHTNESS = 0, //!< image brightness
+ /*1*/  CONTROL_CONTRAST,       //!< image contrast
+@@ -226,23 +232,23 @@
+ /*62*/  CAM_HUMIDITY,			//!<check if camera has	 humidity sensor  20191021 LYL Unified humidity function
+ /*63*/  CAM_PRESSURE             //check if camera has pressure sensor 
  
 -};
 +} CONTROL_ID;
@@ -102,5 +102,5 @@ diff -urN usr/local/include/qhyccdstruct.h usr/local/include/qhyccdstruct.h
 -};
 +} CodecID;
  
- typedef struct _QHYCamReadModeInfo
- {
+ 
+ 

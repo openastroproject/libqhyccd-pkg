@@ -34,8 +34,9 @@ my $verbose = 0;
 my $skipMismatches = 1;
 
 if ( !defined( $ARGV[0] )) {
-	print "usage: $0 <version>\n";
+	print "usage: $0 <version> [<real-version>]\n";
 	print "  where <version> is 'YY.M.D' from the tar file name\n\n";
+	print "  and <real-version> is 'YY.M.D' from the library version, if required\n\n";
 	exit ( -1 );
 }
 
@@ -46,6 +47,11 @@ if ( -d $buildDir ) {
 mkdir $buildDir || die "Can't create directory $buildDir: $!";
 
 my $ver = $ARGV[0];
+my $realVersion = '';
+if ( defined ( $ARGV[1])) {
+	$realVersion = $ARGV[1];
+}
+
 opendir ( my $dirHandle, $searchDir ) ||
 	die "Can't open directory for read: $!";
 my @tarFiles = grep {
@@ -59,7 +65,7 @@ if ( @tarFiles < 1 ) {
 
 chdir $buildDir || die "Can't change to directory $buildDir: $!";
 
-my $version = '';
+my $version = $realVersion;
 my $newVersion;
 foreach ( @tarFiles ) {
   my $tarFile = $_;
@@ -91,14 +97,15 @@ foreach ( @tarFiles ) {
 	}
 	print "Library version appears to be $newVersion\n";
 	if ( $version eq '' ) {
+		print "Setting version to $newVersion\n";
 		$version = $newVersion;
 	} else {
-		if ( $newVersion ne $version ) {
+		if ( $realVersion eq '' && $newVersion ne $version ) {
 			print "Version $newVersion doesn't match $version already seen\n";
 			if ( $newVersion ge $version ) {
 				$version = $newVersion;
 			} else {
-				die "Skipping on version mismatch";
+				die "Halting on version mismatch";
 			}
 		}
 	}
@@ -121,6 +128,7 @@ foreach ( @tarFiles ) {
 			}
 			if ( $dirname eq 'usr/local/cmake_modules' ||
 					$dirname =~ m!^usr/local/testapp! ||
+					$dirname =~ m!^usr/local/riffa_linux_driver! ||
 					$dirname eq 'usr/local/include' ||
 					$dirname eq 'usr/local/doc' ||
 					$dirname eq 'lib/firmware/qhy' ||

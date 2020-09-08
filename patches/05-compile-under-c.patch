@@ -2,24 +2,21 @@ Allow compilation under C
 diff -urN usr/local/include/qhyccd.h usr/local/include/qhyccd.h
 --- usr/local/include/qhyccd.h	2019-06-29 00:12:19.874361269 +0100
 +++ usr/local/include/qhyccd.h	2019-06-29 00:13:25.178919468 +0100
-@@ -6,11 +6,9 @@
+@@ -6,8 +6,10 @@
  #include <qhyccd/qhyccdstruct.h>
  #include <stdint.h>
  #include <qhyccd/config.h>
 +#if defined(_WIN32) || defined(__cplusplus)
  #include <functional>
--
--
--
--
+ #include <string>
 +#endif
  
- #if defined (_WIN32)
- #include "cyapi.h"
-@@ -24,8 +22,11 @@
+ 
+ 
+@@ -25,8 +27,11 @@
  EXPORTC void STDCALL SetQHYCCDLogLevel(uint8_t logLevel);
  
- #if defined(__linux__ )&&!defined (__ANDROID__)
+ #if (defined(__linux__ )&&!defined (__ANDROID__)) ||(defined (__APPLE__)&&defined( __MACH__)) ||(defined(__linux__ )&&defined (__ANDROID__))
 -
 +#ifdef __cplusplus
  EXPORTC void STDCALL SetQHYCCDLogFunction(std::function<void(const std::string &message)> logFunction);
@@ -29,6 +26,7 @@ diff -urN usr/local/include/qhyccd.h usr/local/include/qhyccd.h
  EXPORTC void STDCALL SetQHYCCDBufferNumber(uint32_t BufNumber);
  
  #endif
+XXXX
 diff -urN usr/local/include/qhyccdstruct.h usr/local/include/qhyccdstruct.h
 --- usr/local/include/qhyccdstruct.h	2019-06-29 00:12:20.753328379 +0100
 +++ usr/local/include/qhyccdstruct.h	2019-06-29 00:13:25.881893455 +0100
@@ -75,10 +73,10 @@ diff -urN usr/local/include/qhyccdstruct.h usr/local/include/qhyccdstruct.h
  {
  /*0*/  CONTROL_BRIGHTNESS = 0, //!< image brightness
  /*1*/  CONTROL_CONTRAST,       //!< image contrast
-@@ -226,23 +232,23 @@
- /*62*/  CAM_HUMIDITY,			//!<check if camera has	 humidity sensor  20191021 LYL Unified humidity function
- /*63*/  CAM_PRESSURE             //check if camera has pressure sensor 
+@@ -229,23 +235,23 @@
  
+ /* Do not Put Item after  CONTROL_MAX_ID !! This should be the max index of the list */
+ /*Last One */  CONTROL_MAX_ID
 -};
 +} CONTROL_ID;
  

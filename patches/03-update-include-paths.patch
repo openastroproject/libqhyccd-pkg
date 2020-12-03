@@ -15,7 +15,7 @@ diff -urN usr/local/include/qhyccd.h usr/local/include/qhyccd.h
 +#include <stdint.h>
 +#include <qhyccd/config.h>
  #include <functional>
- 
+ #include <string>
  
 diff -urN usr/local/include/qhyccdstruct.h usr/local/include/qhyccdstruct.h
 --- usr/local/include/qhyccdstruct.h	2019-06-26 09:17:38.000000000 +0100

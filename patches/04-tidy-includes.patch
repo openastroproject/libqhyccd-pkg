@@ -19,7 +19,7 @@ diff -urN usr/local/include/qhyccd.h usr/local/include/qhyccd.h
  
  #include <qhyccd/qhyccderr.h>
  #include <qhyccd/qhyccdcamdef.h>
-@@ -14,9 +16,6 @@
+@@ -15,9 +17,6 @@
  #include "cyapi.h"
  #endif
  

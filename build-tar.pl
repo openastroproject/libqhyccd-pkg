@@ -30,7 +30,7 @@ use diagnostics;
 my $searchDir = ".";
 my $buildDir = "./build";
 
-my $verbose = 0;
+my $verbose = 1;
 my $skipMismatches = 1;
 
 if ( !defined( $ARGV[0] )) {
@@ -87,11 +87,11 @@ foreach ( @tarFiles ) {
 	print "architecture = $arch\n" if ( $verbose );
 	my $cmd = "tar zxvf ../$tarFile";
   my @files = split /\n/, `$cmd`;
-	my @matches = grep { /\/libqhyccd.so\.\d+\.\d+\.\d+$/ } @files;
+	my @matches = grep { /\/libqhyccd.so\.\d+\.\d+\.\d+(\.\d+)?$/ } @files;
 	if ( @matches < 1 ) {
 		die "No matching file found for .../libqhyccd.so\\.\\d+\\.\\d+\\.\\d+";
 	}
-	( $newVersion ) = $matches[0] =~ /\/libqhyccd.so\.(\d+\.\d+\.\d+)$/;
+	( $newVersion ) = $matches[0] =~ /\/libqhyccd.so\.(\d+\.\d+\.\d+\.?\d+)/;
 	if ( !defined ( $newVersion )) {
 		die "Error matching version string from '${matches[0]}'";
 	}

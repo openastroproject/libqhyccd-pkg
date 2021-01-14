@@ -2,7 +2,7 @@ Clean up udev rules
 diff -urN lib/udev/rules.d/85-qhyccd.rules lib/udev/rules.d/85-qhyccd.rules
 --- lib/udev/rules.d/85-qhyccd.rules	2020-05-12 11:08:55.979742135 +0100
 +++ lib/udev/rules.d/85-qhyccd.rules	2020-05-12 11:22:41.619121667 +0100
-@@ -18,149 +18,170 @@
+@@ -18,150 +18,171 @@
  # Add usbfs memory limit
  # Jasem Mutlaq 2019-09-21
  
@@ -210,6 +210,7 @@ diff -urN lib/udev/rules.d/85-qhyccd.rules lib/udev/rules.d/85-qhyccd.rules
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c183", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY183.img -D $env{DEVNAME}"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c163", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY163.img -D $env{DEVNAME}"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c294", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY294.img -D $env{DEVNAME}"
+-ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c296", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY294PRO.img -D $env{DEVNAME}"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c165", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY165.img -D $env{DEVNAME}"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c167", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY168.img -D $env{DEVNAME}"
 -ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c247", RUN+="/sbin/fxload -t fx3 -I /lib/firmware/qhy/QHY247.img -D $env{DEVNAME}"
@@ -227,6 +228,7 @@ diff -urN lib/udev/rules.d/85-qhyccd.rules lib/udev/rules.d/85-qhyccd.rules
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c183", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY183.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c163", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY163.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c294", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY294.img -D $env{DEVNAME}"
++ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c296", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY294PRO.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c165", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY165.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c167", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY168.img -D $env{DEVNAME}"
 +ATTRS{idVendor}=="1618", ATTRS{idProduct}=="c247", RUN+="/sbin/qhyfxload -t fx3 -I /lib/firmware/qhy/QHY247.img -D $env{DEVNAME}"

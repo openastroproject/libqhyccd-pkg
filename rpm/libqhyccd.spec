@@ -1,14 +1,14 @@
 %define debug_package %{nil}
 
 Name:           libqhyccd
-Version:        21.2.1.10
+Version:        21.3.13.16
 Release:        0
 Summary:        QHY camera SDK
 License:        expat
 URL:            https://www.qhyccd.com/
 Prefix:         %{_prefix}
 Provides:       libqhyccd = %{version}-%{release}
-Obsoletes:      libqhyccd < 21.2.1.10
+Obsoletes:      libqhyccd < 21.3.13.16
 Requires:       libusbx
 Requires:       fxload
 Requires:       libqhyccd-firmware = %{version}-%{release}
@@ -27,7 +27,7 @@ Summary:        Development files for %{name}
 Group:          Development/Libraries
 Requires:       %{name}%{?_isa} = %{version}-%{release}
 Provides:       libqhyccd-devel = %{version}-%{release}
-Obsoletes:      libqhyccd-devel < 21.2.1.10
+Obsoletes:      libqhyccd-devel < 21.3.13.16
 
 %description    devel
 The %{name}-devel package contains libraries and header files for
@@ -36,7 +36,7 @@ developing applications that use %{name}.
 %package        firmware
 Summary:        Firmware files for %{name}
 Provides:       libqhyccd-firmware = %{version}-%{release}
-Obsoletes:      libqhyccd-firmware < 21.2.1.10
+Obsoletes:      libqhyccd-firmware < 21.3.13.16
 BuildArch:	noarch
 
 %description    firmware
@@ -118,6 +118,6 @@ cp lib/firmware/qhy/* %{buildroot}/lib/firmware/qhy
 /lib/firmware/qhy/*
 
 %changelog
-* Thu Feb 11 2021 James Fidell <james@openastroproject.org> - 21.2.1.10-0
+* Thu Mar 25 2021 James Fidell <james@openastroproject.org> - 21.3.13.16-0
 - Initial RPM release
 

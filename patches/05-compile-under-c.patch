@@ -26,7 +26,18 @@ diff -urN usr/local/include/qhyccd.h usr/local/include/qhyccd.h
  EXPORTC void STDCALL SetQHYCCDBufferNumber(uint32_t BufNumber);
  
  #endif
-XXXX
+@@ -877,7 +881,11 @@
+ 
+ 
+ 
++#ifdef __cplusplus
+ EXPORTFUNC int STDCALL QHYCCD_fpga_list(struct fpga_info_list &list);
++#else
++EXPORTFUNC int STDCALL QHYCCD_fpga_list(struct fpga_info_list *list);
++#endif
+ EXPORTFUNC uint32_t STDCALL QHYCCD_fpga_open(int id);
+ EXPORTFUNC void STDCALL QHYCCD_fpga_close();
+ EXPORTFUNC int STDCALL QHYCCD_fpga_send(int chnl, void * data, int len, int destoff, int last, uint64_t timeout);
 diff -urN usr/local/include/qhyccdstruct.h usr/local/include/qhyccdstruct.h
 --- usr/local/include/qhyccdstruct.h	2019-06-29 00:12:20.753328379 +0100
 +++ usr/local/include/qhyccdstruct.h	2019-06-29 00:13:25.881893455 +0100
